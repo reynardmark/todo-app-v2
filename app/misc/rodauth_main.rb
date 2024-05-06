@@ -26,6 +26,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # Defaults to Rails `secret_key_base`, but you can use your own secret key.
     # hmac_secret "492872c0a24a35ade59134de7324221b8b95d8fbbbd7a6b80e372783f0edb0476e88753d7ffa1b72c0dc26ed0a877beba1bb5b3289e58a492e5704208757b847"
 
+    # enable jwt
+    enable :jwt
+    
     # Set JWT secret, which is used to cryptographically protect the token.
     jwt_secret { hmac_secret }
 

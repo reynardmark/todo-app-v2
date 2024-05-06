@@ -3,7 +3,6 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -11,11 +10,20 @@ import { PageContainer, PaperCenterContainer } from "../components";
 import { SyntheticEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+import { createAccount } from "../services/api";
+
 export default function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log("submitted");
+    createAccount(email, password, confirmPassword).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -40,6 +48,10 @@ export default function Register() {
             size="small"
             label="Email"
             type="email"
+            value={email}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
             inputProps={{ style: { fontSize: 14 } }}
             InputLabelProps={{ style: { fontSize: 14 } }}
           />
@@ -48,6 +60,10 @@ export default function Register() {
             id="password"
             size="small"
             label="Password"
+            value={password}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
             type={showPassword ? "text" : "password"}
             inputProps={{ style: { fontSize: 14 } }}
             InputLabelProps={{ style: { fontSize: 14 } }}
@@ -73,6 +89,10 @@ export default function Register() {
             size="small"
             label="Confirm Password"
             type="password"
+            value={confirmPassword}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setConfirmPassword(e.target.value)
+            }
             inputProps={{ style: { fontSize: 14 } }}
             InputLabelProps={{ style: { fontSize: 14 } }}
           />
