@@ -10,22 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_05_231052) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_06_230530) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
-
-  create_table "user_password_reset_keys", force: :cascade do |t|
-    t.string "key", null: false
-    t.datetime "deadline", null: false
-    t.datetime "email_last_sent", default: -> { "CURRENT_TIMESTAMP" }, null: false
-  end
-
-  create_table "user_verification_keys", force: :cascade do |t|
-    t.string "key", null: false
-    t.datetime "requested_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "email_last_sent", default: -> { "CURRENT_TIMESTAMP" }, null: false
-  end
 
   create_table "users", force: :cascade do |t|
     t.integer "status", default: 1, null: false
@@ -34,6 +22,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_231052) do
     t.index ["email"], name: "index_users_on_email", unique: true, where: "(status = ANY (ARRAY[1, 2]))"
   end
 
-  add_foreign_key "user_password_reset_keys", "users", column: "id"
-  add_foreign_key "user_verification_keys", "users", column: "id"
 end
