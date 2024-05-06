@@ -1,14 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
-import router from './routes/router.tsx'
-import { RouterProvider } from 'react-router-dom'
-import { ThemeProvider } from '@emotion/react'
+import router from "./routes/router.tsx";
+import { RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>,
-)
+);

@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { PageContainer } from "../components";
+import { PageContainer, PaperCenterContainer } from "../components";
 import { SyntheticEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -20,18 +20,7 @@ export default function Register() {
 
   return (
     <PageContainer>
-      <Paper
-        component="div"
-        elevation={1}
-        sx={{
-          display: "flex",
-          padding: "20px 24px",
-          justifyContent: "center",
-          flexDirection: "column",
-          minWidth: "320px",
-          gap: "8px",
-        }}
-      >
+      <PaperCenterContainer>
         <Typography variant="h6" component="h1" fontWeight={700}>
           Register in TodoApp V2
         </Typography>
@@ -97,7 +86,7 @@ export default function Register() {
             Submit
           </Button>
         </Box>
-      </Paper>
+      </PaperCenterContainer>
     </PageContainer>
   );
 }
