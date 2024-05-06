@@ -10,7 +10,7 @@ import { PageContainer, PaperCenterContainer } from "../components";
 import { SyntheticEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { createAccount } from "../services/api";
+import { createUser } from "../api/users";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ export default function Register() {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log("submitted");
-    createAccount(email, password, confirmPassword).then((res) => {
+    createUser(email, password, confirmPassword).then((res) => {
       console.log(res);
     });
   };

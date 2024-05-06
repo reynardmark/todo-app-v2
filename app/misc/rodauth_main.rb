@@ -3,9 +3,15 @@ require "sequel/core"
 class RodauthMain < Rodauth::Rails::Auth
   configure do
     # List of authentication features that are loaded.
-    enable :create_account, :verify_account, :verify_account_grace_period,
+    enable :create_account, 
       :login, :logout, :jwt,
-      :reset_password, :change_password, :change_password_notify, :close_account
+      :close_account
+
+
+      # TODO:
+      # :verify_account, :verify_account_grace_period,
+      # :reset_password, :change_password, :change_password_notify, 
+
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -19,8 +25,8 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Change prefix of table and foreign key column names from default "account"
     accounts_table :users
-    verify_account_table :user_verification_keys
-    reset_password_table :user_password_reset_keys
+    # verify_account_table :user_verification_keys
+    # reset_password_table :user_password_reset_keys
 
     # The secret key used for hashing public-facing tokens for various features.
     # Defaults to Rails `secret_key_base`, but you can use your own secret key.
@@ -55,7 +61,7 @@ class RodauthMain < Rodauth::Rails::Auth
     account_password_hash_column :password_hash
 
     # Set password when creating account instead of when verifying.
-    verify_account_set_password? false
+
 
     # Change some default param keys.
     login_param "email"
@@ -77,15 +83,15 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Emails
     # Use a custom mailer for delivering authentication emails.
-    create_reset_password_email do
-      RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
-    end
-    create_verify_account_email do
-      RodauthMailer.verify_account(self.class.configuration_name, account_id, verify_account_key_value)
-    end
-    create_password_changed_email do
-      RodauthMailer.password_changed(self.class.configuration_name, account_id)
-    end
+    # create_reset_password_email do
+    #   RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
+    # end
+    # create_verify_account_email do
+    #   RodauthMailer.verify_account(self.class.configuration_name, account_id, verify_account_key_value)
+    # end
+    # create_password_changed_email do
+    #   RodauthMailer.password_changed(self.class.configuration_name, account_id)
+    # end
     # create_reset_password_notify_email do
     #   RodauthMailer.reset_password_notify(self.class.configuration_name, account_id)
     # end
