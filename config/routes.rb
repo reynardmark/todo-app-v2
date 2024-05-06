@@ -7,4 +7,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  constraints Rodauth::Rails.authenticate do
+    # routes that will require authentication
+  end
 end
