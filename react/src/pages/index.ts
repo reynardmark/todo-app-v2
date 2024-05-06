@@ -1,4 +1,5 @@
 import NotFound from "./NotFound";
 import Sample from "./Sample";
+import Register from "./Register";
 
-export {NotFound, Sample};
+export { NotFound, Register, Sample };

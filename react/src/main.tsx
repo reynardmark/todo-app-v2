@@ -5,6 +5,7 @@ import './index.css'
 
 import router from './routes/router.tsx'
 import { RouterProvider } from 'react-router-dom'
+import { ThemeProvider } from '@emotion/react'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
