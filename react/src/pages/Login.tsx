@@ -33,8 +33,8 @@ export default function Login() {
     <PageContainer>
       <PaperCenterContainer>
         <AlertSnackbar
-          open={!!location.state.message}
-          alertText={location.state.message}
+          open={!!location.state?.message}
+          alertText={location.state?.message}
           position={{ vertical: "top", horizontal: "center" }}
         />
         <Typography variant="h6" component="h1" fontWeight={700}>

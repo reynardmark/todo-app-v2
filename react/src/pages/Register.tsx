@@ -14,8 +14,10 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { createUser } from "../api/users";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+
 export default function Register() {
-  const [username, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -25,7 +27,7 @@ export default function Register() {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log("submitted");
+
     createUser(username, password, confirmPassword).then((res) => {
       if (res.success) {
         //navigate
@@ -36,6 +38,7 @@ export default function Register() {
         });
       } else {
         //show error messages (form validations)
+        console.log(res);
       }
     });
   };
@@ -64,7 +67,7 @@ export default function Register() {
             type="text"
             value={username}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
+              setUsername(e.target.value)
             }
             inputProps={{ style: { fontSize: 14 } }}
             InputLabelProps={{ style: { fontSize: 14 } }}
