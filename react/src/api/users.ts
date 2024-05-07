@@ -30,15 +30,23 @@ export async function createUser(
   }
 }
 
-export async function loginUser(email: string, password: string) {
-  const response = await fetch(DEV_BASE_URL + "/login", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function loginUser(username: string, password: string) {
+  try {
+    const response = await fetch(DEV_BASE_URL + "/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (e) {
+    console.error(e.message);
+  }
 }

@@ -12,7 +12,7 @@ import { Link } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { createUser } from "../api/users";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [username, setEmail] = useState("");
@@ -20,11 +20,23 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log("submitted");
     createUser(username, password, confirmPassword).then((res) => {
-      console.log(res);
+      if (res.success) {
+        //navigate
+        navigate("/login", {
+          state: {
+            message: "You have successfully registered! You may now login.",
+          },
+        });
+      } else {
+        //show error messages (form validations)
+      }
     });
   };
 

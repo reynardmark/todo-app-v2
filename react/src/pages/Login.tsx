@@ -11,22 +11,32 @@ import { SyntheticEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "@mui/material";
 
-import { createUser } from "../api/users";
-import { Link as RouterLink } from "react-router-dom";
+import { loginUser } from "../api/users";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import { AlertSnackbar } from "../components";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+
+    loginUser(username, password).then((res) => console.log(res));
     console.log("submitted");
   };
+
+  const location = useLocation();
 
   return (
     <PageContainer>
       <PaperCenterContainer>
+        <AlertSnackbar
+          open={!!location.state.message}
+          alertText={location.state.message}
+          position={{ vertical: "top", horizontal: "center" }}
+        />
         <Typography variant="h6" component="h1" fontWeight={700}>
           Login - TodoApp V2
         </Typography>
@@ -42,13 +52,13 @@ export default function Login() {
         >
           <TextField
             variant="standard"
-            id="email"
+            id="username"
             size="small"
-            label="Email"
-            type="email"
-            value={email}
+            label="Username"
+            type="text"
+            value={username}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
+              setUsername(e.target.value)
             }
             inputProps={{ style: { fontSize: 14 } }}
             InputLabelProps={{ style: { fontSize: 14 } }}

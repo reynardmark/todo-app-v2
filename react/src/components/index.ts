@@ -1,4 +1,5 @@
 import PageContainer from "./PageContainer";
 import PaperCenterContainer from "./PaperCenterContainer";
+import AlertSnackbar from "./AlertSnackbar";
 
-export { PageContainer, PaperCenterContainer };
+export { AlertSnackbar, PageContainer, PaperCenterContainer };
