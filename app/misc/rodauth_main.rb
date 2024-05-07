@@ -3,14 +3,16 @@ require "sequel/core"
 class RodauthMain < Rodauth::Rails::Auth
   configure do
     # List of authentication features that are loaded.
-    enable :create_account, 
-      :login, :logout, :jwt,
-      :close_account
+    enable :create_account, :login, :logout, :jwt, :close_account
 
+    # change column required to login
+    login_column :username
 
-      # TODO:
-      # :verify_account, :verify_account_grace_period,
-      # :reset_password, :change_password, :change_password_notify, 
+    # require email for logging in?
+    require_email_address_logins? false
+
+    # default status value
+    account_open_status_value 1
 
 
     # See the Rodauth documentation for the list of available config options:
@@ -42,8 +44,8 @@ class RodauthMain < Rodauth::Rails::Auth
     only_json? true
 
     # Handle login and password confirmation fields on the client side.
-    # require_password_confirmation? false
-    # require_login_confirmation? false
+    require_password_confirmation? true
+    require_login_confirmation? false
 
     # Use path prefix for all routes.
     # prefix "/auth"
@@ -61,11 +63,11 @@ class RodauthMain < Rodauth::Rails::Auth
     account_password_hash_column :password_hash
 
     # Set password when creating account instead of when verifying.
-
+    # verify_account_set_password? false
 
     # Change some default param keys.
-    login_param "email"
-    login_confirm_param "email-confirm"
+    login_param "username"
+    # login_confirm_param "username-confirm"
     # password_confirm_param "confirm_password"
 
     # Redirect back to originally requested location after authentication.
@@ -101,10 +103,10 @@ class RodauthMain < Rodauth::Rails::Auth
     # create_unlock_account_email do
     #   RodauthMailer.unlock_account(self.class.configuration_name, account_id, unlock_account_key_value)
     # end
-    send_email do |email|
-      # queue email delivery on the mailer after the transaction commits
-      db.after_commit { email.deliver_later }
-    end
+    # send_email do |email|
+    #   # queue email delivery on the mailer after the transaction commits
+    #   db.after_commit { email.deliver_later }
+    # end
 
     # ==> Flash
     # Override default flash messages.

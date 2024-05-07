@@ -8,12 +8,14 @@ import {
 } from "@mui/material";
 import { PageContainer, PaperCenterContainer } from "../components";
 import { SyntheticEvent, useState } from "react";
+import { Link } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { createUser } from "../api/users";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -21,7 +23,7 @@ export default function Register() {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     console.log("submitted");
-    createUser(email, password, confirmPassword).then((res) => {
+    createUser(username, password, confirmPassword).then((res) => {
       console.log(res);
     });
   };
@@ -46,9 +48,9 @@ export default function Register() {
             variant="standard"
             id="email"
             size="small"
-            label="Email"
-            type="email"
-            value={email}
+            label="Username"
+            type="text"
+            value={username}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
@@ -103,8 +105,14 @@ export default function Register() {
               marginTop: "12px",
             }}
           >
-            Submit
+            Register
           </Button>
+          <Typography>
+            Already have an account?{" "}
+            <Link component={RouterLink} to="/login">
+              Log in
+            </Link>
+          </Typography>
         </Box>
       </PaperCenterContainer>
     </PageContainer>
