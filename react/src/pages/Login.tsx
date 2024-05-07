@@ -69,6 +69,7 @@ export default function Login() {
             size="small"
             label="Password"
             value={password}
+            tabIndex={-1}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
@@ -95,7 +96,7 @@ export default function Login() {
             type="submit"
             variant="contained"
             sx={{
-              marginTop: "12px",
+              margin: "2px 0 8px 0",
             }}
           >
             Login

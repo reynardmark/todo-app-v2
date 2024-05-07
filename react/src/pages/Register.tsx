@@ -7,46 +7,89 @@ import {
   Typography,
 } from "@mui/material";
 import { PageContainer, PaperCenterContainer } from "../components";
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { Link } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { createUser } from "../api/users";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z
+  .object({
+    username: z
+      .string()
+      .trim()
+      .min(3, { message: "Must be 3 or more characters long" }),
+    password: z
+      .string()
+      .min(8, { message: "Must be 8 or more characters long" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password and Confirm password are not the same",
+    path: ["confirmPassword"],
+  });
+
+interface RegisterFormValues {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
+
+  //react-hook-form
+  const form = useForm<RegisterFormValues>({
+    defaultValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
+    resolver: zodResolver(schema),
+  });
+
+  //manage form, submit form, form validation
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-
-    createUser(username, password, confirmPassword).then((res) => {
-      if (res.success) {
-        //navigate
-        navigate("/login", {
-          state: {
-            message: "You have successfully registered! You may now login.",
-          },
-        });
-      } else {
-        //show error messages (form validations)
-        console.log(res);
-      }
-    });
+  const onSubmit = (data: RegisterFormValues) => {
+    console.log(data);
   };
+
+  // const handleSubmit = (e: SyntheticEvent) => {
+  //   e.preventDefault();
+
+  //   createUser(username, password, confirmPassword).then((res) => {
+  //     if (res.success) {
+  //       //navigate
+  //       navigate("/login", {
+  //         state: {
+  //           message: "You have successfully registered! You may now login.",
+  //         },
+  //       });
+  //     } else {
+  //       //show error messages (form validations)
+  //       console.log(res);
+  //     }
+  //   });
+  // };
 
   return (
     <PageContainer>
       <PaperCenterContainer>
-        <Typography variant="h6" component="h1" fontWeight={700}>
+        <Typography
+          variant="h6"
+          component="h1"
+          fontWeight={700}
+          sx={{ marginBottom: "8px" }}
+        >
           Register in TodoApp V2
         </Typography>
         <Box
@@ -55,9 +98,8 @@ export default function Register() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <TextField
             variant="standard"
@@ -65,30 +107,29 @@ export default function Register() {
             size="small"
             label="Username"
             type="text"
-            value={username}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 14 } }}
-            InputLabelProps={{ style: { fontSize: 14 } }}
+            InputLabelProps={{ shrink: true }}
+            {...register("username")}
+            error={!!errors.username}
+            helperText={errors.username ? errors.username?.message : " "}
+            FormHelperTextProps={{
+              sx: {
+                marginTop: 0,
+              },
+            }}
           />
           <TextField
             variant="standard"
             id="password"
             size="small"
             label="Password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
             type={showPassword ? "text" : "password"}
-            inputProps={{ style: { fontSize: 14 } }}
-            InputLabelProps={{ style: { fontSize: 14 } }}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               endAdornment: (
                 <IconButton
                   aria-label="toggle password visiblity"
                   onClick={() => setShowPassword(!showPassword)}
+                  tabIndex={-1}
                   sx={{
                     padding: "0 4px 0 2px",
                   }}
@@ -99,6 +140,14 @@ export default function Register() {
                 </IconButton>
               ),
             }}
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password ? errors.password?.message : " "}
+            FormHelperTextProps={{
+              sx: {
+                marginTop: 0,
+              },
+            }}
           />
           <TextField
             variant="standard"
@@ -106,23 +155,32 @@ export default function Register() {
             size="small"
             label="Confirm Password"
             type="password"
-            value={confirmPassword}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setConfirmPassword(e.target.value)
+            InputLabelProps={{ shrink: true }}
+            {...register("confirmPassword")}
+            error={!!errors.confirmPassword}
+            helperText={
+              errors.confirmPassword ? errors.confirmPassword?.message : " "
             }
-            inputProps={{ style: { fontSize: 14 } }}
-            InputLabelProps={{ style: { fontSize: 14 } }}
+            FormHelperTextProps={{
+              sx: {
+                marginTop: 0,
+              },
+            }}
           />
           <Button
             type="submit"
             variant="contained"
             sx={{
-              marginTop: "12px",
+              margin: "2px 0 8px 0",
             }}
           >
             Register
           </Button>
-          <Typography>
+          <Typography
+            sx={{
+              fontSize: "0.8rem",
+            }}
+          >
             Already have an account?{" "}
             <Link component={RouterLink} to="/login">
               Log in
