@@ -11,7 +11,7 @@ import {
   PageContainer,
   PaperCenterContainer,
 } from "../components";
-import { SyntheticEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "@mui/material";
 
@@ -19,61 +19,74 @@ import { loginUser } from "../api/users";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { setToken } from "../utils/token";
 
 interface LoginFormValues {
   username: string;
   password: string;
 }
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const schema = z.object({
+  username: z.string().trim().min(1, { message: "Must not be empty" }),
+  password: z.string().min(1, { message: "Must not be empty" }),
+});
 
-  const form = useForm({
+export default function Login() {
+  const form = useForm<LoginFormValues>({
     defaultValues: {
       username: "",
       password: "",
     },
+    resolver: zodResolver(schema),
   });
 
-  const { register, handleSubmit, formState } = form;
+  const { register, handleSubmit, formState, resetField } = form;
   const { errors } = formState;
 
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
-  // const handleSubmit = (e: SyntheticEvent) => {
-  //   e.preventDefault();
-
-  //   loginUser(username, password).then((res) => console.log(res));
-  // };
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
-
     const { username, password } = data;
 
-    loginUser(username, password).then((res) => console.log(res));
-  };
-
-  const onError = () => {
-    //do something on error?
+    loginUser(username, password).then((res) => {
+      if (res.success) {
+        console.log(res);
+        //redirect
+        //store jwt in localstorage
+        // setToken(valueOfToken)
+      } else {
+        setErrorMessage("Invalid username or password!");
+        setIsSnackbarOpen(!isSnackbarOpen);
+        resetField("password");
+      }
+    });
   };
 
   const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setIsSnackbarOpen(!isSnackbarOpen);
+    }
+  }, []);
 
   return (
     <PageContainer>
       <PaperCenterContainer>
         <AlertSnackbar
           open={isSnackbarOpen}
-          alertText={location.state?.message}
+          alertText={errorMessage ? errorMessage : location.state?.message}
           position={{ vertical: "top", horizontal: "center" }}
           setIsSnackbarOpen={setIsSnackbarOpen}
-          severity="success"
+          severity={errorMessage ? "error" : "success"}
         />
         <Typography variant="h6" component="h1" fontWeight={700}>
-          Login - TodoApp V2
+          Login - SampleApp V2
         </Typography>
         <Box
           component="form"
@@ -81,38 +94,31 @@ export default function Login() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
           <TextField
             {...register("username")}
+            helperText={errors.username ? errors.username.message : " "}
+            error={!!errors.username}
             variant="standard"
             id="username"
             size="small"
             label="Username"
             type="text"
-            value={username}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
-            }
-            inputProps={{ style: { fontSize: 14 } }}
-            InputLabelProps={{ style: { fontSize: 14 } }}
+            InputLabelProps={{ shrink: true }}
           />
           <TextField
             {...register("password")}
+            helperText={errors.password ? errors.password.message : " "}
+            error={!!errors.password}
             variant="standard"
             id="password"
             size="small"
             label="Password"
-            value={password}
             tabIndex={-1}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
             type={showPassword ? "text" : "password"}
-            inputProps={{ style: { fontSize: 14 } }}
-            InputLabelProps={{ style: { fontSize: 14 } }}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               endAdornment: (
                 <IconButton

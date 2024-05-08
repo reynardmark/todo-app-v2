@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { Stack } from "@mui/material";
+import { useQuery } from "react-query";
+import { postsQuery } from "../routes/sample";
 
 export default function Task() {
   useEffect(() => {
@@ -8,5 +10,19 @@ export default function Task() {
     //redirect to /login
   }, []);
 
-  return <Stack>A Task</Stack>;
+  const query = useQuery(postsQuery());
+
+  return (
+    <Stack>
+      <ul>
+        {query.data?.map((datum) => {
+          return (
+            <li key={datum.id}>
+              {datum.title} - {datum.body}
+            </li>
+          );
+        })}
+      </ul>
+    </Stack>
+  );
 }

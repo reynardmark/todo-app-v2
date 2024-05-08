@@ -1,5 +1,6 @@
-class TasksController < ApplicationController
+class Api::v1::TasksController < ApplicationController
   before_action :set_task, only: %i[ show update destroy ]
+  after_action :set_jwt_token
 
   # GET /tasks
   def index

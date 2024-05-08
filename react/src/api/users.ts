@@ -18,15 +18,11 @@ export async function createUser(
       },
     });
 
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // }
-
     const result = await response.json();
 
     return result;
   } catch (e) {
-    console.log(e.message);
+    alert(e.message);
   }
 }
 
@@ -47,6 +43,6 @@ export async function loginUser(username: string, password: string) {
 
     return result;
   } catch (e) {
-    console.error(e.message);
+    alert(e.message);
   }
 }

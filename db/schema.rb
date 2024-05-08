@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_053900) do
     t.integer "status", default: 1, null: false
     t.citext "username", null: false
     t.string "password_hash"
-    t.index ["username"], name: "index_users_on_username", unique: true, where: "(status = ANY (ARRAY[1, 2]))"
+    t.index ["username"], name: "index_users_on_username", unique: true, where: "(status = 1)"
   end
 
   add_foreign_key "categories", "users"
