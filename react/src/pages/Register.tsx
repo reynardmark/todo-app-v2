@@ -6,7 +6,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { PageContainer, PaperCenterContainer } from "../components";
+import {
+  AlertSnackbar,
+  PageContainer,
+  PaperCenterContainer,
+} from "../components";
 import { useState } from "react";
 import { Link } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -30,7 +34,7 @@ const schema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password and Confirm password are not the same",
+    message: "Confirm password does not match",
     path: ["confirmPassword"],
   });
 
@@ -42,6 +46,8 @@ interface RegisterFormValues {
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [backendErrorValidation, setbackendErrorValidation] = useState("");
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   //react-hook-form
   const form = useForm<RegisterFormValues>({
@@ -60,30 +66,39 @@ export default function Register() {
   const navigate = useNavigate();
 
   const onSubmit = (data: RegisterFormValues) => {
-    console.log(data);
+    const { username, password, confirmPassword } = data;
+
+    createUser(username, password, confirmPassword).then((res) => {
+      console.log(res);
+
+      if (res.success) {
+        navigate("/login", {
+          state: {
+            message: "You have successfully registered! You may now login.",
+          },
+        });
+      } else {
+        // show error message
+        const errorMessage = res["field-error"][1];
+        setbackendErrorValidation(errorMessage);
+        setIsSnackbarOpen(true);
+
+        //search onError
+      }
+    });
   };
-
-  // const handleSubmit = (e: SyntheticEvent) => {
-  //   e.preventDefault();
-
-  //   createUser(username, password, confirmPassword).then((res) => {
-  //     if (res.success) {
-  //       //navigate
-  //       navigate("/login", {
-  //         state: {
-  //           message: "You have successfully registered! You may now login.",
-  //         },
-  //       });
-  //     } else {
-  //       //show error messages (form validations)
-  //       console.log(res);
-  //     }
-  //   });
-  // };
 
   return (
     <PageContainer>
       <PaperCenterContainer>
+        <AlertSnackbar
+          alertText={backendErrorValidation}
+          open={isSnackbarOpen}
+          setIsSnackbarOpen={setIsSnackbarOpen}
+          position={{ vertical: "top", horizontal: "center" }}
+          severity="error"
+        />
+
         <Typography
           variant="h6"
           component="h1"
@@ -102,13 +117,13 @@ export default function Register() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <TextField
+            {...register("username")}
             variant="standard"
             id="email"
             size="small"
             label="Username"
             type="text"
             InputLabelProps={{ shrink: true }}
-            {...register("username")}
             error={!!errors.username}
             helperText={errors.username ? errors.username?.message : " "}
             FormHelperTextProps={{
@@ -118,6 +133,7 @@ export default function Register() {
             }}
           />
           <TextField
+            {...register("password")}
             variant="standard"
             id="password"
             size="small"
@@ -140,7 +156,6 @@ export default function Register() {
                 </IconButton>
               ),
             }}
-            {...register("password")}
             error={!!errors.password}
             helperText={errors.password ? errors.password?.message : " "}
             FormHelperTextProps={{
@@ -150,13 +165,13 @@ export default function Register() {
             }}
           />
           <TextField
+            {...register("confirmPassword")}
             variant="standard"
             id="confirm-password"
             size="small"
             label="Confirm Password"
             type="password"
             InputLabelProps={{ shrink: true }}
-            {...register("confirmPassword")}
             error={!!errors.confirmPassword}
             helperText={
               errors.confirmPassword ? errors.confirmPassword?.message : " "

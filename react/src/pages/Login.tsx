@@ -6,25 +6,58 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { PageContainer, PaperCenterContainer } from "../components";
+import {
+  AlertSnackbar,
+  PageContainer,
+  PaperCenterContainer,
+} from "../components";
 import { SyntheticEvent, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "@mui/material";
 
 import { loginUser } from "../api/users";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { AlertSnackbar } from "../components";
+
+import { useForm } from "react-hook-form";
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const form = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
+
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
+  // const handleSubmit = (e: SyntheticEvent) => {
+  //   e.preventDefault();
+
+  //   loginUser(username, password).then((res) => console.log(res));
+  // };
+
+  const onSubmit = (data: LoginFormValues) => {
+    console.log(data);
+
+    const { username, password } = data;
 
     loginUser(username, password).then((res) => console.log(res));
-    console.log("submitted");
+  };
+
+  const onError = () => {
+    //do something on error?
   };
 
   const location = useLocation();
@@ -33,9 +66,11 @@ export default function Login() {
     <PageContainer>
       <PaperCenterContainer>
         <AlertSnackbar
-          open={!!location.state?.message}
+          open={isSnackbarOpen}
           alertText={location.state?.message}
           position={{ vertical: "top", horizontal: "center" }}
+          setIsSnackbarOpen={setIsSnackbarOpen}
+          severity="success"
         />
         <Typography variant="h6" component="h1" fontWeight={700}>
           Login - TodoApp V2
@@ -48,9 +83,10 @@ export default function Login() {
             flexDirection: "column",
             gap: "8px",
           }}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <TextField
+            {...register("username")}
             variant="standard"
             id="username"
             size="small"
@@ -64,6 +100,7 @@ export default function Login() {
             InputLabelProps={{ style: { fontSize: 14 } }}
           />
           <TextField
+            {...register("password")}
             variant="standard"
             id="password"
             size="small"

@@ -1,4 +1,4 @@
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, AlertColor, Snackbar } from "@mui/material";
 import { useState } from "react";
 
 interface anchorOrigin {
@@ -10,25 +10,27 @@ interface AlertSnackbarProps {
   alertText: string;
   open: boolean;
   position: anchorOrigin;
+  severity: AlertColor;
+  setIsSnackbarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function AlertSnackbar({
   alertText,
-  open,
+  open: isSnackbarOpen,
   position,
+  severity,
+  setIsSnackbarOpen,
 }: AlertSnackbarProps) {
-  const [isOpen, setIsOpen] = useState(open);
-
   return (
     <Snackbar
-      open={isOpen}
+      open={isSnackbarOpen}
       autoHideDuration={8000}
-      onClose={() => setIsOpen(!isOpen)}
+      onClose={() => setIsSnackbarOpen(!isSnackbarOpen)}
       anchorOrigin={position}
     >
       <Alert
-        onClose={() => setIsOpen(!isOpen)}
-        severity="success"
+        onClose={() => setIsSnackbarOpen(!isSnackbarOpen)}
+        severity={severity}
         variant="filled"
       >
         {alertText}
