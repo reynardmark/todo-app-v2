@@ -39,6 +39,8 @@ export async function loginUser(username: string, password: string) {
       },
     });
 
+    console.log(response.headers.get("Authorization"));
+
     const result = await response.json();
 
     return result;
