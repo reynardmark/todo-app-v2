@@ -152,7 +152,7 @@ export default function Login() {
         </Button>
         <Typography>
           Don't have an account yet?{" "}
-          <Link component={RouterLink} to="/register">
+          <Link component={RouterLink} to="/register" underline="none">
             Register
           </Link>
         </Typography>

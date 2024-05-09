@@ -21,7 +21,7 @@ import {
   Menu as MenuIcon,
 } from "@mui/icons-material";
 
-import { Outlet } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
@@ -29,10 +29,12 @@ const itemsInSidebar = [
   {
     name: "Dashboard",
     icon: <DashboardIcon />,
+    pathname: "/",
   },
   {
     name: "Tasks",
     icon: <TaskIcon />,
+    pathname: "/tasks",
   },
 ];
 
@@ -45,6 +47,8 @@ export default function SideTopBarLayout() {
   const [drawerVariant, setDrawerVariant] =
     useState<DrawerProps["variant"]>("permanent");
   const { width } = useWindowDimensions();
+
+  const location = useLocation();
 
   useEffect(() => {
     if (width <= theme.breakpoints.values.sm) {
@@ -74,7 +78,13 @@ export default function SideTopBarLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography>Contents</Typography>
+          <Typography
+            sx={{
+              fontWeight: 700,
+            }}
+          >
+            Title of the page
+          </Typography>
         </Toolbar>
       </AppBar>
 
@@ -105,6 +115,7 @@ export default function SideTopBarLayout() {
               sx={{
                 fontWeight: 700,
                 cursor: "default",
+                userSelect: "none",
               }}
             >
               Todo V2
@@ -114,7 +125,10 @@ export default function SideTopBarLayout() {
           <List>
             {itemsInSidebar.map((item) => (
               <ListItem key={item.name}>
-                <ListItemButton href="#list">
+                <ListItemButton
+                  selected={location.pathname === item.pathname}
+                  href={`${item.pathname}`}
+                >
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText>{item.name}</ListItemText>
                 </ListItemButton>
@@ -130,6 +144,7 @@ export default function SideTopBarLayout() {
             ml: { sm: `${DRAWER_WIDTH}px` },
             p: 4,
           }}
+          component="main"
         >
           <Outlet />
         </Box>
