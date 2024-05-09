@@ -19,6 +19,8 @@ import {
   Dashboard as DashboardIcon,
   Task as TaskIcon,
   Menu as MenuIcon,
+  TaskAlt as TaskAltIcon,
+  Task,
 } from "@mui/icons-material";
 
 import { useLocation, Outlet } from "react-router-dom";
@@ -109,7 +111,9 @@ export default function SideTopBarLayout() {
             display="flex"
             justifyContent="center"
             alignItems="center"
+            gap={3}
           >
+            <TaskAltIcon fontSize="large" />
             <Typography
               variant="h4"
               sx={{
