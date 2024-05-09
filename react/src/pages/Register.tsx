@@ -75,6 +75,7 @@ export default function Register() {
         navigate("/login", {
           state: {
             message: "You have successfully registered! You may now login.",
+            snackBarSeverity: "success",
           },
         });
       } else {
@@ -82,127 +83,123 @@ export default function Register() {
         const errorMessage = res["field-error"][1];
         setbackendErrorValidation(errorMessage);
         setIsSnackbarOpen(true);
-
-        //search onError
       }
     });
   };
 
   return (
-    <PageContainer>
-      <PaperCenterContainer>
-        <AlertSnackbar
-          alertText={backendErrorValidation}
-          open={isSnackbarOpen}
-          setIsSnackbarOpen={setIsSnackbarOpen}
-          position={{ vertical: "top", horizontal: "center" }}
-          severity="error"
-        />
+    <>
+      <AlertSnackbar
+        alertText={backendErrorValidation}
+        open={isSnackbarOpen}
+        setIsSnackbarOpen={setIsSnackbarOpen}
+        position={{ vertical: "top", horizontal: "center" }}
+        severity="error"
+      />
 
-        <Typography
-          variant="h6"
-          component="h1"
-          fontWeight={700}
-          sx={{ marginBottom: "8px" }}
-        >
-          Register in TodoApp V2
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          sx={{
-            display: "flex",
-            flexDirection: "column",
+      <Typography
+        variant="h6"
+        component="h1"
+        fontWeight={700}
+        sx={{ marginBottom: "8px" }}
+      >
+        Register in TodoApp V2
+      </Typography>
+      <Box
+        component="form"
+        noValidate
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <TextField
+          {...register("username")}
+          variant="standard"
+          id="email"
+          size="small"
+          label="Username"
+          type="text"
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.username}
+          helperText={errors.username ? errors.username?.message : " "}
+          FormHelperTextProps={{
+            sx: {
+              marginTop: 0,
+            },
           }}
-          onSubmit={handleSubmit(onSubmit)}
+        />
+        <TextField
+          {...register("password")}
+          variant="standard"
+          id="password"
+          size="small"
+          label="Password"
+          type={showPassword ? "text" : "password"}
+          InputLabelProps={{ shrink: true }}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visiblity"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+                sx={{
+                  padding: "0 4px 0 2px",
+                }}
+              >
+                <InputAdornment position="end">
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </InputAdornment>
+              </IconButton>
+            ),
+          }}
+          error={!!errors.password}
+          helperText={errors.password ? errors.password?.message : " "}
+          FormHelperTextProps={{
+            sx: {
+              marginTop: 0,
+            },
+          }}
+        />
+        <TextField
+          {...register("confirmPassword")}
+          variant="standard"
+          id="confirm-password"
+          size="small"
+          label="Confirm Password"
+          type="password"
+          InputLabelProps={{ shrink: true }}
+          error={!!errors.confirmPassword}
+          helperText={
+            errors.confirmPassword ? errors.confirmPassword?.message : " "
+          }
+          FormHelperTextProps={{
+            sx: {
+              marginTop: 0,
+            },
+          }}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            margin: "2px 0 8px 0",
+          }}
         >
-          <TextField
-            {...register("username")}
-            variant="standard"
-            id="email"
-            size="small"
-            label="Username"
-            type="text"
-            InputLabelProps={{ shrink: true }}
-            error={!!errors.username}
-            helperText={errors.username ? errors.username?.message : " "}
-            FormHelperTextProps={{
-              sx: {
-                marginTop: 0,
-              },
-            }}
-          />
-          <TextField
-            {...register("password")}
-            variant="standard"
-            id="password"
-            size="small"
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            InputLabelProps={{ shrink: true }}
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  aria-label="toggle password visiblity"
-                  onClick={() => setShowPassword(!showPassword)}
-                  tabIndex={-1}
-                  sx={{
-                    padding: "0 4px 0 2px",
-                  }}
-                >
-                  <InputAdornment position="end">
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </InputAdornment>
-                </IconButton>
-              ),
-            }}
-            error={!!errors.password}
-            helperText={errors.password ? errors.password?.message : " "}
-            FormHelperTextProps={{
-              sx: {
-                marginTop: 0,
-              },
-            }}
-          />
-          <TextField
-            {...register("confirmPassword")}
-            variant="standard"
-            id="confirm-password"
-            size="small"
-            label="Confirm Password"
-            type="password"
-            InputLabelProps={{ shrink: true }}
-            error={!!errors.confirmPassword}
-            helperText={
-              errors.confirmPassword ? errors.confirmPassword?.message : " "
-            }
-            FormHelperTextProps={{
-              sx: {
-                marginTop: 0,
-              },
-            }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              margin: "2px 0 8px 0",
-            }}
-          >
-            Register
-          </Button>
-          <Typography
-            sx={{
-              fontSize: "0.8rem",
-            }}
-          >
-            Already have an account?{" "}
-            <Link component={RouterLink} to="/login">
-              Log in
-            </Link>
-          </Typography>
-        </Box>
-      </PaperCenterContainer>
-    </PageContainer>
+          Register
+        </Button>
+        <Typography
+          sx={{
+            fontSize: "0.8rem",
+          }}
+        >
+          Already have an account?{" "}
+          <Link component={RouterLink} to="/login">
+            Log in
+          </Link>
+        </Typography>
+      </Box>
+    </>
   );
 }

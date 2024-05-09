@@ -14,6 +14,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # default status value
     account_open_status_value 1
 
+    # # revoke JWT on logout
+    # features.include?(:active_sessions)
+
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -42,7 +45,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Accept only JSON requests.
     only_json? true
-
+    
     # Handle login and password confirmation fields on the client side.
     require_password_confirmation? true
     require_login_confirmation? false

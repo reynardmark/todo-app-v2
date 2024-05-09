@@ -3,7 +3,11 @@ function getToken() {
 }
 
 function setToken(value: string) {
-  return localStorage.setItem("tkn", value);
+  localStorage.setItem("tkn", value);
 }
 
-export { getToken, setToken };
+function removeToken() {
+  localStorage.removeItem("tkn");
+}
+
+export { getToken, setToken, removeToken };

@@ -15,8 +15,8 @@ import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "@mui/material";
 
-import { loginUser } from "../api/users";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { LoginUserResponse, loginUser } from "../api/users";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,21 +50,28 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const navigate = useNavigate();
+
   const onSubmit = (data: LoginFormValues) => {
     const { username, password } = data;
 
-    loginUser(username, password).then((res) => {
-      if (res.success) {
-        console.log(res);
-        //redirect
-        //store jwt in localstorage
-        // setToken(valueOfToken)
-      } else {
-        setErrorMessage("Invalid username or password!");
-        setIsSnackbarOpen(!isSnackbarOpen);
-        resetField("password");
-      }
-    });
+    loginUser(username, password).then(
+      ({ token, result }: LoginUserResponse | void) => {
+        if (result.success) {
+          //redirect
+          setToken(token);
+          // navigate("", {
+          //   state: {
+          //     message: result.success,
+          //   },
+          // });
+        } else {
+          setErrorMessage("Invalid username or password!");
+          setIsSnackbarOpen(!isSnackbarOpen);
+          resetField("password");
+        }
+      },
+    );
   };
 
   const location = useLocation();
@@ -76,82 +83,80 @@ export default function Login() {
   }, []);
 
   return (
-    <PageContainer>
-      <PaperCenterContainer>
-        <AlertSnackbar
-          open={isSnackbarOpen}
-          alertText={errorMessage ? errorMessage : location.state?.message}
-          position={{ vertical: "top", horizontal: "center" }}
-          setIsSnackbarOpen={setIsSnackbarOpen}
-          severity={errorMessage ? "error" : "success"}
+    <>
+      <AlertSnackbar
+        open={isSnackbarOpen}
+        alertText={errorMessage ? errorMessage : location.state?.message}
+        position={{ vertical: "top", horizontal: "center" }}
+        setIsSnackbarOpen={setIsSnackbarOpen}
+        severity={errorMessage ? "error" : location.state?.snackBarSeverity}
+      />
+      <Typography variant="h6" component="h1" fontWeight={700}>
+        Login - SampleApp V2
+      </Typography>
+      <Box
+        component="form"
+        noValidate
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <TextField
+          {...register("username")}
+          helperText={errors.username ? errors.username.message : " "}
+          error={!!errors.username}
+          variant="standard"
+          id="username"
+          size="small"
+          label="Username"
+          type="text"
+          InputLabelProps={{ shrink: true }}
         />
-        <Typography variant="h6" component="h1" fontWeight={700}>
-          Login - SampleApp V2
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          sx={{
-            display: "flex",
-            flexDirection: "column",
+        <TextField
+          {...register("password")}
+          helperText={errors.password ? errors.password.message : " "}
+          error={!!errors.password}
+          variant="standard"
+          id="password"
+          size="small"
+          label="Password"
+          tabIndex={-1}
+          type={showPassword ? "text" : "password"}
+          InputLabelProps={{ shrink: true }}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visiblity"
+                onClick={() => setShowPassword(!showPassword)}
+                sx={{
+                  padding: "0 4px 0 2px",
+                }}
+              >
+                <InputAdornment position="end">
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </InputAdornment>
+              </IconButton>
+            ),
           }}
-          onSubmit={handleSubmit(onSubmit)}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            margin: "2px 0 8px 0",
+          }}
         >
-          <TextField
-            {...register("username")}
-            helperText={errors.username ? errors.username.message : " "}
-            error={!!errors.username}
-            variant="standard"
-            id="username"
-            size="small"
-            label="Username"
-            type="text"
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            {...register("password")}
-            helperText={errors.password ? errors.password.message : " "}
-            error={!!errors.password}
-            variant="standard"
-            id="password"
-            size="small"
-            label="Password"
-            tabIndex={-1}
-            type={showPassword ? "text" : "password"}
-            InputLabelProps={{ shrink: true }}
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  aria-label="toggle password visiblity"
-                  onClick={() => setShowPassword(!showPassword)}
-                  sx={{
-                    padding: "0 4px 0 2px",
-                  }}
-                >
-                  <InputAdornment position="end">
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </InputAdornment>
-                </IconButton>
-              ),
-            }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              margin: "2px 0 8px 0",
-            }}
-          >
-            Login
-          </Button>
-          <Typography>
-            Don't have an account yet?{" "}
-            <Link component={RouterLink} to="/register">
-              Register
-            </Link>
-          </Typography>
-        </Box>
-      </PaperCenterContainer>
-    </PageContainer>
+          Login
+        </Button>
+        <Typography>
+          Don't have an account yet?{" "}
+          <Link component={RouterLink} to="/register">
+            Register
+          </Link>
+        </Typography>
+      </Box>
+    </>
   );
 }
