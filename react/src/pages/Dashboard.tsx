@@ -1,76 +1,17 @@
-import {
-  AppBar,
-  Box,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-
-import {
-  Dashboard as DashboardIcon,
-  Task as TaskIcon,
-} from "@mui/icons-material";
-
-const itemsInSidebar = [
-  {
-    name: "Dashboard",
-    icon: <DashboardIcon />,
-  },
-  {
-    name: "Tasks",
-    icon: <TaskIcon />,
-  },
-];
+import { Divider, Paper, Stack, Typography } from "@mui/material";
+import { DashboardPaper } from "../components";
 
 export default function Dashboard() {
   return (
-    <Box display="flex">
-      <Drawer
-        variant="permanent"
-        open={true}
-        sx={{
-          margin: "0 -16px",
-        }}
-      >
-        <Box
-          height={64}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 700,
-              cursor: "default",
-            }}
-          >
-            Todo V2
-          </Typography>
-        </Box>
-        <Divider />
-        <List>
-          {itemsInSidebar.map((item) => (
-            <ListItem key={item.name}>
-              <ListItemButton href="#list">
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText>{item.name}</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <AppBar position="fixed" component="nav">
-        <Toolbar>
-          <Typography>Contents</Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <Stack
+      direction="row"
+      spacing={3}
+      justifyContent="center"
+      textAlign="center"
+    >
+      <DashboardPaper count={2} title="All Tasks" />
+      <DashboardPaper count={12} title="Incomplete Tasks" />
+      <DashboardPaper count={25} title="Completed Tasks" />
+    </Stack>
   );
 }
