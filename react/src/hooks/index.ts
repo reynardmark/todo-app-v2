@@ -1,3 +1,4 @@
 import useWindowDimensions from "./useWindowDimensions";
+import useToggle from "./useToggle";
 
-export { useWindowDimensions };
+export { useToggle, useWindowDimensions };

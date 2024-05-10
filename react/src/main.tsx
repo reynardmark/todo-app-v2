@@ -6,13 +6,25 @@ import router from "./routes/router.tsx";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { createTheme } from "@mui/material";
 
 const queryClient = new QueryClient();
+const theme = createTheme({
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );
