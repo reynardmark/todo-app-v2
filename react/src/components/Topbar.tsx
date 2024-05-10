@@ -1,5 +1,7 @@
 import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface TopbarProps {
   drawerWidth: number;
@@ -7,6 +9,21 @@ interface TopbarProps {
 }
 
 export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
+  const location = useLocation();
+  const [pageTitle, setPageTitle] = useState("");
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setPageTitle("Dashboard");
+      return;
+    }
+
+    if (location.pathname === "/tasks") {
+      setPageTitle("Tasks");
+      return;
+    }
+  }, [location]);
+
   return (
     <AppBar
       position="fixed"
@@ -30,7 +47,7 @@ export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
             fontWeight: 700,
           }}
         >
-          Title of the page
+          {pageTitle}
         </Typography>
       </Toolbar>
     </AppBar>

@@ -47,9 +47,10 @@ export default function Sidebar({
   setIsOpenMobile,
 }: SidebarProps) {
   const theme = useTheme();
-  const [drawerVariant, setDrawerVariant] =
-    useState<DrawerProps["variant"]>("temporary");
   const { width: windowWidth } = useWindowDimensions();
+  const [drawerVariant, setDrawerVariant] = useState<DrawerProps["variant"]>(
+    windowWidth <= theme.breakpoints.values.sm ? "temporary" : "permanent",
+  );
 
   const location = useLocation();
 
@@ -60,7 +61,7 @@ export default function Sidebar({
       setDrawerVariant("permanent");
     }
     setIsOpenMobile(false);
-  }, [width]);
+  }, [windowWidth]);
 
   return (
     <Drawer
