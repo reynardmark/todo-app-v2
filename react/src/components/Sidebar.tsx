@@ -17,11 +17,14 @@ import {
   Dashboard as DashboardIcon,
   Task as TaskIcon,
 } from "@mui/icons-material";
-import { useToggle, useWindowDimensions } from "../hooks";
+import { useWindowDimensions } from "../hooks";
 import { useLocation } from "react-router-dom";
 
 interface SidebarProps {
   width: number;
+  isOpenMobile: boolean;
+  toggleOpenMobile: () => void;
+  setIsOpenMobile: (desiredValue: boolean) => void;
 }
 
 const itemsInSidebar = [
@@ -37,12 +40,16 @@ const itemsInSidebar = [
   },
 ];
 
-export default function Sidebar({ width }: SidebarProps) {
+export default function Sidebar({
+  width,
+  isOpenMobile,
+  toggleOpenMobile,
+  setIsOpenMobile,
+}: SidebarProps) {
   const theme = useTheme();
   const [drawerVariant, setDrawerVariant] =
     useState<DrawerProps["variant"]>("temporary");
   const { width: windowWidth } = useWindowDimensions();
-  const [isOpenMobile, toggleOpenMobile, setIsOpenMobile] = useToggle(false);
 
   const location = useLocation();
 
@@ -64,7 +71,7 @@ export default function Sidebar({ width }: SidebarProps) {
           width: width,
         },
       }}
-      onClose={() => toggleOpenMobile()}
+      onClose={toggleOpenMobile}
     >
       <Box
         height={64}
