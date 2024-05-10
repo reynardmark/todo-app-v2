@@ -11,7 +11,6 @@ export default function SideTopBarLayout() {
   return (
     <>
       <Topbar toggleOpenMobile={toggleOpenMobile} drawerWidth={DRAWER_WIDTH} />
-
       <Box
         display="flex"
         sx={{

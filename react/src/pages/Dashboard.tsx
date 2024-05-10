@@ -11,6 +11,7 @@ export default function Dashboard() {
       alignItems="center"
       textAlign="center"
       flexWrap="wrap"
+      padding={4}
     >
       <DashboardPaper count={2} title="All Tasks" />
       <DashboardPaper count={12} title="Incomplete Tasks" />

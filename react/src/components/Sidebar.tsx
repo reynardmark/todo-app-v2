@@ -99,7 +99,7 @@ export default function Sidebar({
           <ListItem key={item.name}>
             <ListItemButton
               selected={location.pathname === item.pathname}
-              href={`${item.pathname}`}
+              href={item.pathname}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText>{item.name}</ListItemText>

@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
+import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 
 interface TopbarProps {
@@ -27,25 +27,45 @@ export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
       component="nav"
       sx={{
         width: { sm: `calc(100% - ${drawerWidth}px)` },
+        backgroundColor: "#F8F8F8",
+        color: "black",
       }}
+      elevation={0}
     >
-      <Toolbar>
-        <IconButton
+      <Toolbar
+        sx={{
+          justifyContent: "space-between",
+        }}
+      >
+        <Box
           sx={{
-            color: "white",
-            display: { sm: "none" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          onClick={toggleOpenMobile}
         >
-          <MenuIcon />
+          <IconButton
+            sx={{
+              color: "black",
+              display: { sm: "none" },
+            }}
+            onClick={toggleOpenMobile}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            sx={{
+              fontWeight: 700,
+            }}
+            component="h2"
+            variant="h5"
+          >
+            {getPageTitle()}
+          </Typography>
+        </Box>
+        <IconButton>
+          <LogoutIcon />
         </IconButton>
-        <Typography
-          sx={{
-            fontWeight: 700,
-          }}
-        >
-          {getPageTitle()}
-        </Typography>
       </Toolbar>
     </AppBar>
   );
