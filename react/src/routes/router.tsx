@@ -4,28 +4,8 @@ import {
   Route,
 } from "react-router-dom";
 
-import { NotFound, Login, Register, Task, Dashboard } from "../pages";
-import { postsLoader } from "./sample";
-
-import { QueryClient } from "react-query";
+import { NotFound, Login, Register, Tasks, Dashboard } from "../pages";
 import { RootLayout } from "../layouts";
-const queryClient = new QueryClient();
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Sample />,
-//     errorElement: <NotFound />,
-//   },
-//   { path: "/register", element: <Register />, errorElement: <NotFound /> },
-//   { path: "/login", element: <Login />, errorElement: <NotFound /> },
-//   {
-//     path: "/tasks",
-//     element: <Task />,
-//     errorElement: <NotFound />,
-//     loader: postsLoader(queryClient),
-//   },
-// ]);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +14,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Dashboard />} />
+        <Route path="/tasks" element={<Tasks />} />
       </Route>
     </Route>,
   ),
