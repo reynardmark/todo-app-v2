@@ -1,6 +1,7 @@
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { Menu as MenuIcon, Logout as LogoutIcon } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { removeToken } from "../utils/token";
 
 interface TopbarProps {
   drawerWidth: number;
@@ -9,6 +10,7 @@ interface TopbarProps {
 
 export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getPageTitle = () => {
     const pathName = location.pathname;
@@ -19,6 +21,11 @@ export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
       case "/tasks":
         return "Tasks";
     }
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    navigate("/login");
   };
 
   return (
@@ -63,7 +70,7 @@ export default function Topbar({ drawerWidth, toggleOpenMobile }: TopbarProps) {
             {getPageTitle()}
           </Typography>
         </Box>
-        <IconButton>
+        <IconButton onClick={handleLogout}>
           <LogoutIcon />
         </IconButton>
       </Toolbar>

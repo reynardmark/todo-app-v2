@@ -60,11 +60,12 @@ export default function Login() {
         if (result.success) {
           //redirect
           setToken(token);
-          // navigate("", {
-          //   state: {
-          //     message: result.success,
-          //   },
-          // });
+          navigate("/", {
+            state: {
+              message: result.success,
+            },
+            replace: true,
+          });
         } else {
           setErrorMessage("Invalid username or password!");
           setIsSnackbarOpen(!isSnackbarOpen);
