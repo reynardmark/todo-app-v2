@@ -1,25 +1,20 @@
-class Api::v1::TasksController < ApplicationController
-  before_action :set_task, only: %i[ show update destroy ]
-  after_action :set_jwt_token
+class Api::V1::TasksController < ApplicationController
+  before_action :set_task, only: %i[ update destroy ]
+  before_action :authenticate
 
   # GET /tasks
   def index
-    @tasks = Task.all
+    tasks = current_user.tasks
 
-    render json: @tasks
+    render json: tasks
   end
-
-  # # GET /tasks/1
-  # def show
-  #   render json: @task
-  # end
 
   # POST /tasks
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
 
     if @task.save
-      render json: @task, status: :created, location: @task
+      render json: @task, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity
     end
@@ -42,11 +37,11 @@ class Api::v1::TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      @task = current_user.tasks.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :category_id)
+      params.require(:task).permit(:name, :completed)
     end
 end

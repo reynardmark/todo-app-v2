@@ -15,6 +15,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_053900) do
   enable_extension "citext"
   enable_extension "plpgsql"
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.boolean "completed", default: false
@@ -28,7 +36,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_07_053900) do
     t.integer "status", default: 1, null: false
     t.citext "username", null: false
     t.string "password_hash"
-    t.index ["username"], name: "index_users_on_username", unique: true, where: "(status = ANY (ARRAY[1, 2]))"
+    t.index ["username"], name: "index_users_on_username", unique: true, where: "(status = 1)"
   end
 
   add_foreign_key "tasks", "users"
