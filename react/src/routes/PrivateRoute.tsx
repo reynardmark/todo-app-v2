@@ -5,6 +5,12 @@ export default function PrivateRoute() {
   return isLoggedIn() ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ message: "You are not yet logged in." }} />
+    <Navigate
+      to="/login"
+      state={{
+        message: "You are not yet logged in.",
+        snackBarSeverity: "warning",
+      }}
+    />
   );
 }
