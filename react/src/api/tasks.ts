@@ -6,10 +6,10 @@ export async function createTask(name: string) {
   try {
     const response = await fetch(DEV_BASE_URL + "/tasks", {
       method: "GET",
-      body: JSON.stringify(name),
+      body: JSON.stringify({ tasks: { name } }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
 
@@ -17,6 +17,71 @@ export async function createTask(name: string) {
 
     return result;
   } catch (e) {
-    alert(e.message);
+    if (e instanceof Error) {
+      alert(e.message);
+    }
+  }
+}
+
+export async function updateTask(name?: string, completed?: boolean) {
+  try {
+    const response = await fetch(DEV_BASE_URL + "/tasks", {
+      method: "PATCH",
+      body: JSON.stringify({
+        tasks: { ...(name && { name }), ...(completed && { completed }) },
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (e) {
+    if (e instanceof Error) {
+      alert(e.message);
+    }
+  }
+}
+
+export async function deleteTask(id: number) {
+  try {
+    const response = await fetch(DEV_BASE_URL + `/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (e) {
+    if (e instanceof Error) {
+      alert(e.message);
+    }
+  }
+}
+
+export async function deleteAllTasks() {
+  try {
+    const response = await fetch(DEV_BASE_URL + `/tasks`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (e) {
+    if (e instanceof Error) {
+      alert(e.message);
+    }
   }
 }
