@@ -14,8 +14,8 @@ class RodauthMain < Rodauth::Rails::Auth
     # default status value
     account_open_status_value 1
 
-    # # revoke JWT on logout
-    # features.include?(:active_sessions)
+    # add prefix for route
+    prefix "/api/v1"
 
 
     # See the Rodauth documentation for the list of available config options:

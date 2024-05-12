@@ -1,6 +1,6 @@
 import { setToken } from "../utils/token";
 
-const DEV_BASE_URL = "http://127.0.0.1:3000";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function createUser(
   username: string,
@@ -8,7 +8,7 @@ export async function createUser(
   passwordConfirmation: string,
 ) {
   try {
-    const response = await fetch(DEV_BASE_URL + "/create-account", {
+    const response = await fetch(BASE_URL + "/create-account", {
       method: "POST",
       body: JSON.stringify({
         username,
@@ -40,7 +40,7 @@ export async function loginUser(
   password: string,
 ): Promise<LoginUserResponse | void> {
   try {
-    const response = await fetch(DEV_BASE_URL + "/login", {
+    const response = await fetch(BASE_URL + "/login", {
       method: "POST",
       body: JSON.stringify({
         username,
@@ -64,7 +64,7 @@ export async function loginUser(
 
 export async function logoutUser() {
   try {
-    const response = await fetch(DEV_BASE_URL + "/logout");
+    const response = await fetch(BASE_URL + "/logout");
 
     const result = await response.json();
 
