@@ -1,5 +1,6 @@
 import { CheckCircle, Delete, Edit } from "@mui/icons-material";
 import {
+  Box,
   CircularProgress,
   Table,
   TableBody,
@@ -15,13 +16,21 @@ import { getAllTasks } from "../api/tasks";
 import Task from "../types/task";
 
 export default function TasksTable() {
-  const { isLoading, error, data } = useQuery<Task[]>({
+  const { isLoading, data, error } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: () => getAllTasks(),
   });
 
   if (isLoading) {
-    return <CircularProgress />;
+    return (
+      <Box display="flex" justifyContent="center">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    throw new Error("Something went wrong. You may try again.");
   }
 
   return (

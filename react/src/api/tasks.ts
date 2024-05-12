@@ -3,23 +3,21 @@ import { getToken } from "../utils/token";
 const DEV_BASE_URL = "http://127.0.0.1:3000/api/v1";
 
 export async function getAllTasks() {
-  try {
-    const response = await fetch(DEV_BASE_URL + "/tasks", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
+  const response = await fetch(DEV_BASE_URL + "/tasks", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
-    const result = await response.json();
-
-    return result;
-  } catch (e) {
-    if (e instanceof Error) {
-      alert(e.message);
-    }
+  if (!response.ok) {
+    throw new Response(response.statusText, { status: response.status });
   }
+
+  const result = await response.json();
+
+  return result;
 }
 
 export async function createTask(name: string) {

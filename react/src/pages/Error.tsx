@@ -1,18 +1,17 @@
-import { useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import { PageContainer, PaperCenterContainer } from "../components";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-export default function NotFound() {
+export default function Error() {
   const navigate = useNavigate();
   const error = useRouteError();
-  console.log(error);
 
   return (
     <PageContainer>
       <PaperCenterContainer>
         <Typography variant="h3" component="h1" textAlign="center">
-          Error: {error.status}
+          {isRouteErrorResponse(error) && `Error: ${error.status}`}
         </Typography>
         <Typography
           sx={{
@@ -20,11 +19,17 @@ export default function NotFound() {
           }}
           textAlign="center"
         >
-          {error.statusText}
+          {isRouteErrorResponse(error) ? error.statusText : error.message}
         </Typography>
-        <Button onClick={() => navigate(-1)} variant="contained">
-          Go back
-        </Button>
+        {isRouteErrorResponse(error) ? (
+          <Button onClick={() => navigate(-1)} variant="contained">
+            Go back
+          </Button>
+        ) : (
+          <Button onClick={() => navigate(0)} variant="contained">
+            Retry
+          </Button>
+        )}
       </PaperCenterContainer>
     </PageContainer>
   );
