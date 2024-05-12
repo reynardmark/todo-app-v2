@@ -19,7 +19,7 @@ export default function Dashboard() {
   };
 
   if (error) {
-    throw new Error("Something went wrong. You may try again.");
+    throw new Error("Something went wrong. Please login again.");
   }
 
   return (

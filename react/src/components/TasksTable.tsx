@@ -16,22 +16,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAllTasks, updateTask, deleteTask } from "../api/tasks";
 import Task from "../types/task";
 
-export default function TasksTable() {
-  const queryClient = useQueryClient();
+import TasksTableBodyRow from "./TasksTableBodyRow";
 
+export default function TasksTable() {
   const { isLoading, data, error } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: () => getAllTasks(),
-  });
-
-  const { mutate: completeTask } = useMutation({
-    mutationFn: (id: number) => updateTask(id, undefined, true),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
-  });
-
-  const { mutate: destroyTask } = useMutation({
-    mutationFn: (id: number) => deleteTask(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   if (isLoading) {
@@ -69,35 +59,12 @@ export default function TasksTable() {
         </TableHead>
         <TableBody>
           {data?.map((data) => (
-            <TableRow
+            <TasksTableBodyRow
               key={data.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell width={"250px"}>{data.name}</TableCell>
-              <TableCell align="center">
-                {data.completed ? (
-                  <Chip label="Completed" color="success" />
-                ) : (
-                  <Chip label="Not completed" />
-                )}
-              </TableCell>
-              <TableCell align="center">
-                {!data.completed && (
-                  <>
-                    <IconButton onClick={() => completeTask(data.id)}>
-                      <CheckCircle />
-                    </IconButton>
-                    <IconButton>
-                      <Edit />
-                    </IconButton>
-                  </>
-                )}
-
-                <IconButton onClick={() => destroyTask(data.id)}>
-                  <Delete />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+              id={data.id}
+              name={data.name}
+              completed={data.completed}
+            />
           ))}
         </TableBody>
       </Table>

@@ -2,6 +2,7 @@ import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import { PageContainer, PaperCenterContainer } from "../components";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { removeToken } from "../utils/token";
 
 export default function Error() {
   const navigate = useNavigate();
@@ -26,8 +27,14 @@ export default function Error() {
             Go back
           </Button>
         ) : (
-          <Button onClick={() => navigate(0)} variant="contained">
-            Retry
+          <Button
+            onClick={() => {
+              removeToken();
+              navigate("/login");
+            }}
+            variant="contained"
+          >
+            Login
           </Button>
         )}
       </PaperCenterContainer>

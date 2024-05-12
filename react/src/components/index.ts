@@ -5,6 +5,7 @@ import AlertSnackbar from "./AlertSnackbar";
 import DashboardPaper from "./DashboardPaper";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import TasksTableBodyRow from "./TasksTableBodyRow";
 
 export {
   AlertSnackbar,
@@ -14,4 +15,5 @@ export {
   PaperCenterContainer,
   Sidebar,
   Topbar,
+  TasksTableBodyRow,
 };
