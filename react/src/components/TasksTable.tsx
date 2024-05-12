@@ -10,6 +10,7 @@ import {
   TableRow,
   Chip,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAllTasks, updateTask, deleteTask } from "../api/tasks";
@@ -45,6 +46,17 @@ export default function TasksTable() {
     throw new Error("Something went wrong. You may try again.");
   }
 
+  if (data?.length === 0) {
+    return (
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: 700, textAlign: "center", mt: 2 }}
+      >
+        No task added.
+      </Typography>
+    );
+  }
+
   return (
     <TableContainer sx={{ maxHeight: "720px" }}>
       <Table sx={{ minWidth: 500, marginBottom: 2 }} aria-label="tasks table">
@@ -61,7 +73,7 @@ export default function TasksTable() {
               key={data.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell width={"320px"}>{data.name}</TableCell>
+              <TableCell width={"250px"}>{data.name}</TableCell>
               <TableCell align="center">
                 {data.completed ? (
                   <Chip label="Completed" color="success" />

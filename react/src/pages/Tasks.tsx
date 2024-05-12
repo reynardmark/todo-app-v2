@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 export default function Tasks() {
-  const { register, formState, handleSubmit } = useForm<TaskFormValue>({
+  const { register, formState, handleSubmit, reset } = useForm<TaskFormValue>({
     defaultValues: {
       name: "",
     },
@@ -37,15 +37,21 @@ export default function Tasks() {
 
   const onSubmit = ({ name }: TaskFormValue) => {
     addTask(name);
+    reset();
   };
 
   return (
     <Paper sx={{ p: 4 }} elevation={2}>
-      <Box display="flex" justifyContent="center" alignItems="center" gap={4}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        columnGap={4}
+        flexWrap="wrap"
+      >
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <TextField
             {...register("name")}
-            sx={{ width: "320px" }}
             variant="standard"
             id="add"
             type="text"
@@ -56,7 +62,7 @@ export default function Tasks() {
           />
         </Box>
         <Button variant="contained" size="small" onClick={() => deleteTasks()}>
-          Delete all
+          Clear all
         </Button>
       </Box>
 
