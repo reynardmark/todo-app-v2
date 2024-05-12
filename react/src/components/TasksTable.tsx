@@ -12,9 +12,10 @@ import {
 } from "@mui/material";
 import { useQuery } from "react-query";
 import { getAllTasks } from "../api/tasks";
+import Task from "../types/task";
 
 export default function TasksTable() {
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: () => getAllTasks(),
   });
@@ -34,7 +35,7 @@ export default function TasksTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((data) => (
+          {data?.map((data) => (
             <TableRow
               key={data.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

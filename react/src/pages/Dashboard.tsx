@@ -2,15 +2,7 @@ import { CircularProgress, Stack } from "@mui/material";
 import { DashboardPaper } from "../components";
 import { useQuery } from "react-query";
 import { getAllTasks } from "../api/tasks";
-
-interface Task {
-  id: number;
-  user_id: number;
-  name: string;
-  completed: boolean;
-  created_at: string;
-  updated_at: string;
-}
+import Task from "../types/task";
 
 export default function Dashboard() {
   const { isLoading, error, data } = useQuery<Task[]>({
