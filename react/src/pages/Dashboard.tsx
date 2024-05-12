@@ -11,13 +11,16 @@ export default function Dashboard() {
   });
 
   const countCompletedTasks = () => {
-    console.log(data);
     return data?.filter((task) => task.completed).length ?? 0;
   };
 
   const countNotCompletedTasks = () => {
     return (data?.length ?? 0) - countCompletedTasks();
   };
+
+  if (error) {
+    throw new Error("Something went wrong. You may try again.");
+  }
 
   return (
     <Stack

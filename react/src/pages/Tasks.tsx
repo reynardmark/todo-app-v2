@@ -1,9 +1,10 @@
-import { Box, Paper, Pagination, TextField } from "@mui/material";
+import { Box, Button, Paper, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TasksTable from "../components/TasksTable";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createTask } from "../api/tasks";
+import { createTask, deleteAllTasks } from "../api/tasks";
+import { useMutation, useQueryClient } from "react-query";
 
 interface TaskFormValue {
   name: string;
@@ -22,29 +23,41 @@ export default function Tasks() {
   });
   const { errors } = formState;
 
+  const queryClient = useQueryClient();
+
+  const { mutate: addTask } = useMutation({
+    mutationFn: (name: string) => createTask(name),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+
+  const { mutate: deleteTasks } = useMutation({
+    mutationFn: () => deleteAllTasks(),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+
   const onSubmit = ({ name }: TaskFormValue) => {
-    console.log(name);
+    addTask(name);
   };
 
   return (
-    <Paper sx={{ p: 4, paddingX: 8 }} elevation={2}>
-      <Box
-        component="form"
-        display="flex"
-        justifyContent="center"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <TextField
-          {...register("name")}
-          variant="standard"
-          id="add"
-          type="text"
-          label="Add task"
-          helperText={errors.name ? errors.name.message : " "}
-          error={!!errors.name}
-          autoComplete="off"
-        />
+    <Paper sx={{ p: 4 }} elevation={2}>
+      <Box display="flex" justifyContent="center" alignItems="center" gap={4}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <TextField
+            {...register("name")}
+            sx={{ width: "320px" }}
+            variant="standard"
+            id="add"
+            type="text"
+            label="Add task"
+            helperText={errors.name ? errors.name.message : " "}
+            error={!!errors.name}
+            autoComplete="off"
+          />
+        </Box>
+        <Button variant="contained" size="small" onClick={() => deleteTasks()}>
+          Delete all
+        </Button>
       </Box>
 
       <TasksTable />

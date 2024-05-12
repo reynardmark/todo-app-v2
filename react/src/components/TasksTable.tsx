@@ -11,14 +11,26 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
-import { useQuery } from "react-query";
-import { getAllTasks } from "../api/tasks";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getAllTasks, updateTask, deleteTask } from "../api/tasks";
 import Task from "../types/task";
 
 export default function TasksTable() {
+  const queryClient = useQueryClient();
+
   const { isLoading, data, error } = useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: () => getAllTasks(),
+  });
+
+  const { mutate: completeTask } = useMutation({
+    mutationFn: (id: number) => updateTask(id, undefined, true),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+
+  const { mutate: destroyTask } = useMutation({
+    mutationFn: (id: number) => deleteTask(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   if (isLoading) {
@@ -34,7 +46,7 @@ export default function TasksTable() {
   }
 
   return (
-    <TableContainer>
+    <TableContainer sx={{ maxHeight: "720px" }}>
       <Table sx={{ minWidth: 500, marginBottom: 2 }} aria-label="tasks table">
         <TableHead>
           <TableRow>
@@ -49,7 +61,7 @@ export default function TasksTable() {
               key={data.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell>{data.name}</TableCell>
+              <TableCell width={"320px"}>{data.name}</TableCell>
               <TableCell align="center">
                 {data.completed ? (
                   <Chip label="Completed" color="success" />
@@ -58,13 +70,18 @@ export default function TasksTable() {
                 )}
               </TableCell>
               <TableCell align="center">
-                <IconButton>
-                  <CheckCircle />
-                </IconButton>
-                <IconButton>
-                  <Edit />
-                </IconButton>
-                <IconButton>
+                {!data.completed && (
+                  <>
+                    <IconButton onClick={() => completeTask(data.id)}>
+                      <CheckCircle />
+                    </IconButton>
+                    <IconButton>
+                      <Edit />
+                    </IconButton>
+                  </>
+                )}
+
+                <IconButton onClick={() => destroyTask(data.id)}>
                   <Delete />
                 </IconButton>
               </TableCell>
