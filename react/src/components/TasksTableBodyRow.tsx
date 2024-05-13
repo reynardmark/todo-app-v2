@@ -34,12 +34,12 @@ export default function TasksTableBodyRow({
   const queryClient = useQueryClient();
 
   const { mutate: completeTask } = useMutation({
-    mutationFn: (id: number) => updateTask(id, undefined, true),
+    mutationFn: () => updateTask(id, undefined, true),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: destroyTask } = useMutation({
-    mutationFn: (id: number) => deleteTask(id),
+    mutationFn: () => deleteTask(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
@@ -91,7 +91,7 @@ export default function TasksTableBodyRow({
       <TableCell align="center">
         {!completed && (
           <>
-            <IconButton onClick={() => completeTask(id)}>
+            <IconButton onClick={() => completeTask()}>
               <CheckCircle />
             </IconButton>
             {!isEditing && (
@@ -102,7 +102,7 @@ export default function TasksTableBodyRow({
           </>
         )}
 
-        <IconButton onClick={() => destroyTask(id)}>
+        <IconButton onClick={() => destroyTask()}>
           <Delete />
         </IconButton>
       </TableCell>

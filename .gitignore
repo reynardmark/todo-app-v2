@@ -25,3 +25,9 @@ dist-ssr
 
 # temp files
 tmp
+
+# db sqlite3 files
+db/todo_app_v2_development.sqlite3
+db/todo_app_v2_development.sqlite3-shm
+db/todo_app_v2_development.sqlite3-wal
+db/todo_app_v2_test.sqlite3
