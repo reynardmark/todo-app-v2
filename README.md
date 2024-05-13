@@ -30,12 +30,3 @@ $ rails db:migrate
 ```
 $ foreman start
 ```
-
-### To see prod locally
-
-```
-$ npm run build
-$ RAILS_SERVE_STATIC_FILES=1 RAILS_ENV=production rails s -b 127.0.0.1 -p 3000
-```
-
-then access locally via: https://127.0.0.1:3000/

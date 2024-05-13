@@ -52,6 +52,3 @@ end
 gem "rodauth-rails", "~> 1.14"
 
 gem "jwt", "~> 2.8"
-
-# same server frontend & backend
-gem "rails-static-router"
