@@ -1,6 +1,5 @@
 import {
   createBrowserRouter,
-  createHashRouter,
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
