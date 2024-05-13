@@ -16,7 +16,7 @@ This toy project is to recall Rails concept and learn how to use Rails as backen
 $ git clone git@github.com:reynardmark/todo-app-v2.git
 $ cd todo-app-v2
 $ bundle
-$ npm i
+$ npm i --legacy-peer-deps
 $ rails db:setup
 $ rails db:migrate
 ```
