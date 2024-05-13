@@ -20,8 +20,8 @@ const router = createBrowserRouter(
       </Route>
       <Route element={<PrivateRoute />}>
         <Route element={<SideTopBarLayout />}>
-          <Route path="/" element={<Dashboard />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/" element={<Dashboard />} />
         </Route>
       </Route>
     </Route>,
