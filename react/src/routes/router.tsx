@@ -1,4 +1,5 @@
 import {
+  createBrowserRouter,
   createHashRouter,
   createRoutesFromElements,
   Route,
@@ -9,7 +10,7 @@ import { SideTopBarLayout, WholePageLayout } from "../layouts";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
-const router = createHashRouter(
+const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />}>
       <Route element={<PublicRoute />}>
