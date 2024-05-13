@@ -3,7 +3,6 @@ import { getToken } from "../utils/token";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getAllTasks() {
-  console.log(BASE_URL);
   const response = await fetch(BASE_URL + "/tasks", {
     method: "GET",
     headers: {
