@@ -145,7 +145,7 @@ export default function Login() {
         >
           Login
         </Button>
-        <Typography>
+        <Typography sx={{ fontSize: "0.8rem" }}>
           Don't have an account yet?{" "}
           <Link component={RouterLink} to="/register" underline="none">
             Register
