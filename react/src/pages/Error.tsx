@@ -6,7 +6,7 @@ import { removeToken } from "../utils/token";
 
 export default function Error() {
   const navigate = useNavigate();
-  const error = useRouteError();
+  const error = useRouteError() as Error;
 
   return (
     <PageContainer>

@@ -1,4 +1,3 @@
-import { CheckCircle, Delete, Edit } from "@mui/icons-material";
 import {
   Box,
   CircularProgress,
@@ -8,12 +7,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Chip,
-  IconButton,
   Typography,
 } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getAllTasks, updateTask, deleteTask } from "../api/tasks";
+import { useQuery } from "react-query";
+import { getAllTasks } from "../api/tasks";
 import Task from "../types/task";
 
 import TasksTableBodyRow from "./TasksTableBodyRow";

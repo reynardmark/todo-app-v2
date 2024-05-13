@@ -6,16 +6,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  AlertSnackbar,
-  PageContainer,
-  PaperCenterContainer,
-} from "../components";
+import { AlertSnackbar } from "../components";
 import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "@mui/material";
 
-import { LoginUserResponse, loginUser } from "../api/users";
+import { loginUser } from "../api/users";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
@@ -55,24 +51,22 @@ export default function Login() {
   const onSubmit = (data: LoginFormValues) => {
     const { username, password } = data;
 
-    loginUser(username, password).then(
-      ({ token, result }: LoginUserResponse | void) => {
-        if (result.success) {
-          //redirect
-          setToken(token);
-          navigate("/", {
-            state: {
-              message: result.success,
-            },
-            replace: true,
-          });
-        } else {
-          setErrorMessage("Invalid username or password!");
-          setIsSnackbarOpen(!isSnackbarOpen);
-          resetField("password");
-        }
-      },
-    );
+    loginUser(username, password).then(({ token, result }: any) => {
+      if (result.success) {
+        //redirect
+        setToken(token);
+        navigate("/", {
+          state: {
+            message: result.success,
+          },
+          replace: true,
+        });
+      } else {
+        setErrorMessage("Invalid username or password!");
+        setIsSnackbarOpen(!isSnackbarOpen);
+        resetField("password");
+      }
+    });
   };
 
   const location = useLocation();

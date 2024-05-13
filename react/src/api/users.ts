@@ -31,8 +31,8 @@ export async function createUser(
 }
 
 export interface LoginUserResponse {
-  token?: string;
-  result?: { success: string };
+  token: string;
+  result: { success: string };
 }
 
 export async function loginUser(

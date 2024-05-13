@@ -1,9 +1,10 @@
 import { getToken } from "../utils/token";
 
-const DEV_BASE_URL = "http://127.0.0.1:3000/api/v1";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getAllTasks() {
-  const response = await fetch(DEV_BASE_URL + "/tasks", {
+  console.log(BASE_URL);
+  const response = await fetch(BASE_URL + "/tasks", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +23,7 @@ export async function getAllTasks() {
 
 export async function createTask(name: string) {
   try {
-    const response = await fetch(DEV_BASE_URL + "/tasks", {
+    const response = await fetch(BASE_URL + "/tasks", {
       method: "POST",
       body: JSON.stringify({ task: { name } }),
       headers: {
@@ -51,7 +52,7 @@ export async function updateTask(
   completed?: boolean,
 ) {
   try {
-    const response = await fetch(DEV_BASE_URL + `/tasks/${id}`, {
+    const response = await fetch(BASE_URL + `/tasks/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         task: { ...(name && { name }), ...(completed && { completed }) },
@@ -78,7 +79,7 @@ export async function updateTask(
 
 export async function deleteTask(id: number) {
   try {
-    const response = await fetch(DEV_BASE_URL + `/tasks/${id}`, {
+    const response = await fetch(BASE_URL + `/tasks/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +99,7 @@ export async function deleteTask(id: number) {
 
 export async function deleteAllTasks() {
   try {
-    const response = await fetch(DEV_BASE_URL + `/tasks`, {
+    const response = await fetch(BASE_URL + `/tasks`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

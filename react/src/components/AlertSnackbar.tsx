@@ -1,5 +1,4 @@
 import { Alert, AlertColor, Snackbar } from "@mui/material";
-import { useState } from "react";
 
 interface anchorOrigin {
   vertical: "top" | "bottom";

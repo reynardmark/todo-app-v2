@@ -11,6 +11,8 @@ accept = [
   'http://localhost:5173', # Dev Frontend
   'http://127.0.0.1:5174', # Dev Frontend
   'http://localhost:5174', # Dev Frontend
+  'http://127.0.0.1:3000', # Local Prod Frontend
+  'http://localhost:3000'  # Local Prod Frontend
 ]
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
