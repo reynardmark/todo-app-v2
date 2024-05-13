@@ -36,3 +36,6 @@ db/todo_app_v2_test.sqlite3
 # env vars
 react/.env.production
 react/.env.development
+
+# master key
+config/master.key
