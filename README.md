@@ -2,6 +2,8 @@
 
 This toy project is to recall Rails concept and learn how to use Rails as backend and React as frontend.
 
+You can access the app in production (here)[https://todo-app-v2-8wkw.onrender.com/login]. Note that this uses SQlite and free tier of render (data is not persistent).
+
 ## Libraries used (React)
 
 - Material UI
@@ -16,7 +18,7 @@ This toy project is to recall Rails concept and learn how to use Rails as backen
 $ git clone git@github.com:reynardmark/todo-app-v2.git
 $ cd todo-app-v2
 $ bundle
-$ npm i --legacy-peer-deps
+$ npm --prefix react i --legacy-peer-deps
 $ rails db:setup
 $ rails db:migrate
 ```
@@ -24,6 +26,7 @@ $ rails db:migrate
 ### Setting up environment variables
 
 1. Create a .env.development file following the template of .env.sample inside react folder.
+2. obtain
 
 ### Starting the app
 
