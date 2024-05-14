@@ -10,7 +10,7 @@ This toy project is to recall Rails concept and learn how to use Rails as backen
 - React Query
 - Zod
 
-## Setup
+## Development Setup
 
 ```
 $ git clone git@github.com:reynardmark/todo-app-v2.git
