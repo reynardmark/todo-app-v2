@@ -2,7 +2,7 @@
 
 This toy project is to recall Rails concept and learn how to use Rails as backend and React as frontend.
 
-You can access the app in production (here)[https://todo-app-v2-8wkw.onrender.com/login]. Note that this uses SQlite and free tier of render (data is not persistent).
+You can access the app in production [here](https://todo-app-v2-8wkw.onrender.com/login). Note that this uses SQlite and free tier of render (data is not persistent).
 
 ## User Stories (Features)
 
