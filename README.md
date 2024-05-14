@@ -33,8 +33,7 @@ $ rails db:migrate
 
 ### Setting up environment variables
 
-1. Create a .env.development file following the template of .env.sample inside react folder.
-2. obtain
+1. Create a .env.development file and follow the template of .env.sample inside react folder.
 
 ### Starting the app
 
